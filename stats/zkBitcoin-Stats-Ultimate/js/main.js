@@ -969,11 +969,11 @@ var total_TOTAL_mint_count_HASH = 0;
   // check to see if the browser has any data in localStorage we can use.
   // don't use the data, though, if it's from an old difficulty period
   try {
-    var last_diff_block_storage = Number(localStorage.getItem('lastDifficultyStartBlock_EraBitcoin2_afbRAFFABC'));
-    last_imported_mint_block = Number(localStorage.getItem('lastMintBlock_EraBitcoin2_afbRAFFABC'));
-    previousChallenge = JSON.parse(localStorage.getItem('mintData_GreekWedding2'));
+    var last_diff_block_storage = Number(localStorage.getItem('lastDifficultyStartBlock_zkBitcoin2_afbRAFFABC'));
+    last_imported_mint_block = Number(localStorage.getItem('lastMintBlock_zkBitcoin2_afbRAFFABC'));
+    previousChallenge = JSON.parse(localStorage.getItem('mintDatazkBitcoin_GreekWedding3'));
 	  console.log("previous ended challenge is this, starting here");
-    var mint_data = localStorage.getItem('mintData_EraBitcoin2_afbRAFFABC');
+    var mint_data = localStorage.getItem('mintData_zkBitcoin2_afbRAFFABC');
 
 //FUCK THIS LINE    if (mint_data !== null && last_diff_block_storage == last_difficulty_start_block) {
       if (mint_data !== null) {
@@ -1177,11 +1177,13 @@ var total_TOTAL_mint_count_HASH = 0;
   });
   
   }
+
+
     if (run != 0 && !(run == 1 && attempts > 20)) {
-      localStorage.setItem('mintData_EraBitcoin2_afbRAFFABC', JSON.stringify(mined_blocks));
-      localStorage.setItem('mintData_GreekWedding2', JSON.stringify(previousChallenge));
-      localStorage.setItem('lastMintBlock_EraBitcoin2_afbRAFFABC', mined_blocks[0][0]);
-      localStorage.setItem('lastDifficultyStartBlock_EraBitcoin2_afbRAFFABC', last_difficulty_start_block.toString());
+      localStorage.setItem('mintData_zkBitcoin2_afbRAFFABC', JSON.stringify(mined_blocks));
+      localStorage.setItem('mintDatazkBitcoin_GreekWedding3', JSON.stringify(previousChallenge));
+      localStorage.setItem('lastMintBlock_zkBitcoin2_afbRAFFABC', mined_blocks[0][0]);
+      localStorage.setItem('lastDifficultyStartBlock_zkBitcoin2_afbRAFFABC', last_difficulty_start_block.toString());
     }
 
     log("processed blocks:",
