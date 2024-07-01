@@ -28,8 +28,8 @@ const _CONTRACT_SYMBOL = "zkBTC";
 const _CONTRACT_ADDRESS = "0xC298c19a01F5c13d38d7116849bB09cc9646314E"; // main zkBTC Contract
 
 
-const _USD_ETH_POOL_ADDRESS = "0x02cff5fee87D2D8e5e68A128229F0DAC9d3582b5"; //auction address
-const _POOL_ADDRESS = "0x14E3373CaD5a5c98D43a3d7AE6284B8c8255bCc7"; //auction address
+const _USD_ETH_POOL_ADDRESS = "0x02cff5fee87D2D8e5e68A128229F0DAC9d3582b5"; //usdc-eth syncswap pool address
+const _POOL_ADDRESS = "0x14E3373CaD5a5c98D43a3d7AE6284B8c8255bCc7"; //main syncswap pool address
 
 
 
