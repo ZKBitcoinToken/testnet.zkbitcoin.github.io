@@ -12,7 +12,7 @@ log('zkBitcoin Stats', version);
 el('#footerversion').innerHTML = version;
 
 
-var ethblockstart = 28876372;
+var ethblockstart =  28876372;
 const ShowStats = true; //Removes my excessive stats
 const API_zkBTC_Users_tx_transactions = "https://raw.githubusercontent.com/ZKBitcoinToken/zkBitcoin-Home-Git/main/zkBitcoin_statspage_stats.html"
 const Forge_Pool_efficeny = 150/32 + 1  //150 min solves and 32 min on Forge only
@@ -25,18 +25,16 @@ const _ZERO_BN = new Eth.BN(0, 10);
 /* todo: move these into some kind of contract helper class */
 const _CONTRACT_NAME = "zkBitcoin";
 const _CONTRACT_SYMBOL = "zkBTC";
-const _CONTRACT_ADDRESS = "0x366d17aDB24A7654DbE82e79F85F9Cb03c03cD0D"; // main zkBTC Contract
-const _CONTRACT_ADDRESS2 = "0x470ecC269dE29ed2d801ef02c4c95F6e107a64B5"; //auction address
+const _CONTRACT_ADDRESS = "0xC298c19a01F5c13d38d7116849bB09cc9646314E"; // main zkBTC Contract
+
+
 const _USD_ETH_POOL_ADDRESS = "0x80115c708E12eDd42E504c1cD52Aea96C547c05c"; //auction address
-const _POOL_ADDRESS = "0x7002d33c756f593ab41af4a236005766e80dc960"; //auction address
-const _CONTRACT_ADDRESS10 = "0x911a89de0430a5ce3699e57d508f8678afa1fffc"; //SUSHISWAP LP
-const _CONTRACT_ADDRESS11 = "0x905dfcd5649217c42684f23958568e533c711aa3"; //SUSHISWAP LP USDC / ETH
-const _CONTRACT_ADDRESS3 = "0x066A7d83C6E5B30fDd9277bA690D598b1653A1A9"; //staking contract for LPers
-const _CONTRACT_ADDRESS4 = "0x911a89de0430a5ce3699e57d508f8678afa1fffc"; //LP token
-const _CONTRACT_ADDRESS5 = "0x7e7bd2E66668e8C3cD48aEA8a380dC504FB21843"; //balancer HELPER
-const _CONTRACT_ADDRESS6 = "0xAb48108f8A5b42b2C07f818bf38a5175c28b5424"; //staking contract for LPers #2 #2 #2
-const _CONTRACT_ADDRESS7 = "0x01e648d9d37df577bc3509d4152efc5590bcb832"; //LP token #2 #2 #2
-const _CONTRACT_ADDRESS25 = "0x63CFc2Af2b3802a85F03ca500e483d0F28Feb67c"; //LP token #2 #2 #2
+const _POOL_ADDRESS = "0x14E3373CaD5a5c98D43a3d7AE6284B8c8255bCc7"; //auction address
+
+
+
+
+const _CONTRACT_ADDRESS25 = "0xf15C0404BDBe356dd943D9793EeA69866d429f24"; //countdown fixer for zkBTC
 
 
 const _MINT_TOPIC = "0xcf6fbb9dcea7d07263ab4f5c3a92f53af33dffc421d9d121e1c74b307e68189d";
@@ -55,7 +53,7 @@ const _MINIMUM_TARGET_BN = new Eth.BN(_MINIMUM_TARGET);
 const _IDEAL_BLOCK_TIME_SECONDS = 60 * 10  //_ETH_BLOCKS_PER_REWARD * _SECONDS_PER_ETH_BLOCK;
 
 /* TODO: figure out why it doesn't work w metamask */
-var eth = new Eth(new Eth.HttpProvider("https://mainnet.era.zksync.io"));
+var eth = new Eth(new Eth.HttpProvider("https://sepolia.era.zksync.dev"));
 // if (typeof window.web3 !== 'undefined' && typeof window.web3.currentProvider !== 'undefined') {
 //   var eth = new Eth(window.web3.currentProvider);
 // } else {
@@ -126,14 +124,8 @@ var known_miners = {
 
 const token = eth.contract(tokenABI).at(_CONTRACT_ADDRESS);
 const token252525 = eth.contract(tokenABI).at(_CONTRACT_ADDRESS25);
-const token2 = eth.contract(tokenABI2).at(_CONTRACT_ADDRESS2); // auction
-const token3 = eth.contract(tokenABI3).at(_CONTRACT_ADDRESS3); //staking
-const token4 = eth.contract(tokenABI4).at(_CONTRACT_ADDRESS4); //lp
-const token5 = eth.contract(tokenABI5).at(_CONTRACT_ADDRESS5); //lp
-const token6 = eth.contract(tokenABI3).at(_CONTRACT_ADDRESS6); //lp
-const token7 = eth.contract(tokenABI4).at(_CONTRACT_ADDRESS7); //lp
-const token10 = eth.contract(tokenABI4).at(_CONTRACT_ADDRESS10); //lp
-const token11 = eth.contract(tokenABI4).at(_CONTRACT_ADDRESS11); //USDC / ETH LP
+
+
 const token12 = eth.contract(tokenABI6).at(_POOL_ADDRESS); //USDC / ETH LP
 const token13 = eth.contract(tokenABI6).at(_USD_ETH_POOL_ADDRESS); //USDC / ETH LP
 
@@ -1058,6 +1050,7 @@ var total_TOTAL_mint_count_HASH = 0;
   var stop_log_search_at_loop = 0
   var start_log_search_at_loop = start_log_search_at;
   var iterations = Math.ceil((blocks_to_search / 1000000));
+	var attempts =0;
   if (iterations <= 0) {
     iterations = 1
   }
@@ -1175,12 +1168,16 @@ var total_TOTAL_mint_count_HASH = 0;
     log('error filtering txs:', error);
      log('error filtering txs:', error);
      log('repeat run', run);
-     run = run - 1
+     run = run - 1;
+	  attempts = attempts + 1;
+	  if(attempts > 20){
+		run = run + 1;  
+	  }
      sleep(500)
   });
   
   }
-    if (run > 0) {
+    if (run != 0 && !(run == 1 && attempts > 20)) {
       localStorage.setItem('mintData_EraBitcoin2_afbRAFFABC', JSON.stringify(mined_blocks));
       localStorage.setItem('mintData_GreekWedding2', JSON.stringify(previousChallenge));
       localStorage.setItem('lastMintBlock_EraBitcoin2_afbRAFFABC', mined_blocks[0][0]);
