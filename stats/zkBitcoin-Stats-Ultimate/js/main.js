@@ -12,7 +12,7 @@ log('zkBitcoin Stats', version);
 el('#footerversion').innerHTML = version;
 
 
-var ethblockstart =  28876372;
+var ethblockstart =  3722539;
 const ShowStats = true; //Removes my excessive stats
 const API_zkBTC_Users_tx_transactions = "https://raw.githubusercontent.com/ZKBitcoinToken/zkBitcoin-Home-Git/main/zkBitcoin_statspage_stats.html"
 const Forge_Pool_efficeny = 150/32 + 1  //150 min solves and 32 min on Forge only
@@ -61,9 +61,9 @@ var eth = new Eth(new Eth.HttpProvider("https://sepolia.era.zksync.dev"));
 //   log("warning: no web3 provider found, using infura.io as backup provider")
 // }
 
-var _BLOCK_EXPLORER_ADDRESS_URL = 'https://era.zksync.network/address/';
-var _BLOCK_EXPLORER_TX_URL = 'https://era.zksync.network/tx/';
-var _BLOCK_EXPLORER_BLOCK_URL = 'https://era.zksync.network/block/';
+var _BLOCK_EXPLORER_ADDRESS_URL = 'https://sepolia.explorer.zksync.io/address/';
+var _BLOCK_EXPLORER_TX_URL = 'https://sepolia.explorer.zksync.io/tx/';
+var _BLOCK_EXPLORER_BLOCK_URL = 'https://sepolia.explorer.zksync.io/block/';
 
 /* colors used by pool names. todo: move to css, still use them for chart.js */
 var pool_colors = {
@@ -281,13 +281,14 @@ stats = [
   ['u5',     null,                                 "txs",              1,          null     ], /* usage */
   ['Price of 1 zkBitcoin Token',     null,                                 "txs",              1,          null     ], /* usage */
    ['Liquidity of SyncSwap Pool',     null,                                 "txs",              1,          null     ], /* usage */
+   ['ETH Price in USD',     null,                                 "$",              1,          null     ], /* usage */
    ['Liquidity of SyncSwap Pool in USD',     null,                                 "txs",              1,          null     ], /* usage */
   ['Current Circulating Supply in USD',     null,                                 "txs",              1,          null     ], /* usage */
      ['Market Cap of 21m zkBitcoin',     null,                                 "txs",              1,          null     ], /* usage */
   ['u77',     token12.getReserves,                                 "ETH",              0.000000000000000001,          null     ], /* usage */
   ['u88',     token12.getReserves,                                 "zKBTC",              0.000000000000000001,          null     ], /* usage */
-  ['u99',     token13.getReserves,                                 "ETH",              0.000000000000000001,          null     ], /* usage */
-  ['u1010',     token13.getReserves,                                 "USDC",              0.000001,          null     ], /* usage */
+  ['u99',     token13.getReserves,                                 "ETH",              0.000001,          null     ], /* usage */
+  ['u1010',     token13.getReserves,                                 "USDC",             0.000000000000000001,          null     ], /* usage */
 ['',                              null,                                 "",                 1,          null     ], /* */
  
 ]
@@ -748,14 +749,15 @@ log("inflationCircl",circl)
 //Stats for Lower part, price, circulating supply $, and market cap $ and LP liquidity
 
 
-  tokensETH_Pool1 = getValueFromStats('u77', stats)
-  tokensZKBTC_Pool1 = getValueFromStats('u88', stats)
-  tokensETH_Pool2 = getValueFromStats('u99', stats)
-  tokensUSDC_Pool2 = getValueFromStats('u1010', stats)
-
+  tokensETH_Pool1 = getValueFromStats('u88', stats)
+  tokensZKBTC_Pool1 = getValueFromStats('u77', stats)
+  tokensETH_Pool2 = getValueFromStats('u1010', stats)
+  tokensUSDC_Pool2 = getValueFromStats('u99', stats)
+	console.log("FIKFFIK : ", tokensUSDC_Pool2);
+	console.log("FIKFFIK22222 : ", tokensETH_Pool2);
 const priceOf1ZkBTCinETH = tokensETH_Pool1 / tokensZKBTC_Pool1;
 const priceOf1ETHinUSDC = tokensUSDC_Pool2 / tokensETH_Pool2;
-
+	
 const priceOf1ZkBTCinUSDC = priceOf1ZkBTCinETH * priceOf1ETHinUSDC;
 const circUSD = total_Minted * priceOf1ZkBTCinUSDC;
 const maxSupplyUSD = 21000000 * priceOf1ZkBTCinUSDC
@@ -777,6 +779,7 @@ const formattedNumber3 = new Intl.NumberFormat(navigator.language).format(tknETH
 const formattedNumber4 = new Intl.NumberFormat(navigator.language).format(cirlUSDP);
 // Format number according to the user's locale
 const formattedNumber5 = new Intl.NumberFormat(navigator.language).format(maxSup);
+const formattedNumber7 = new Intl.NumberFormat(navigator.language).format(priceOf1ETHinUSDC);
 console.log("Total Liquidity in USD: ", USDinPool);
 console.log("Total Liquidity in USD2: ", USDinPool2);
 const USDPOOLz = USDinPool + USDinPool2;
@@ -791,6 +794,7 @@ el_safe('#CurrentCirculatingSupplyinUSD').innerHTML = '<b>' + formattedNumber4 +
 
 el_safe('#MarketCapof21mzkBitcoin').innerHTML = '<b>'+ formattedNumber5 + '</b> $';
 el_safe('#LiquidityofSyncSwapPoolinUSD').innerHTML = '<b>'+ formattedNumber6 + '</b> $';
+el_safe('#ETHPriceinUSD').innerHTML = '<b>'+ formattedNumber7 + '</b> $';
 
 
 }
@@ -969,11 +973,11 @@ var total_TOTAL_mint_count_HASH = 0;
   // check to see if the browser has any data in localStorage we can use.
   // don't use the data, though, if it's from an old difficulty period
   try {
-    var last_diff_block_storage = Number(localStorage.getItem('lastDifficultyStartBlock_zkBitcoin2_afbRAFFABC'));
-    last_imported_mint_block = Number(localStorage.getItem('lastMintBlock_zkBitcoin2_afbRAFFABC'));
-    previousChallenge = JSON.parse(localStorage.getItem('mintDatazkBitcoin_GreekWedding3'));
+    var last_diff_block_storage = Number(localStorage.getItem('lastDifficultyStartBlock_zkBitcoin2_afbRAFFABC111'));
+    last_imported_mint_block = Number(localStorage.getItem('lastMintBlock_zkBitcoin2_afbRAFFABC111'));
+    previousChallenge = JSON.parse(localStorage.getItem('mintDatazkBitcoin_GreekWedding3111'));
 	  console.log("previous ended challenge is this, starting here");
-    var mint_data = localStorage.getItem('mintData_zkBitcoin2_afbRAFFABC');
+    var mint_data = localStorage.getItem('mintData_zkBitcoin2_afbRAFFABC111');
 
 //FUCK THIS LINE    if (mint_data !== null && last_diff_block_storage == last_difficulty_start_block) {
       if (mint_data !== null) {
@@ -1039,7 +1043,7 @@ var total_TOTAL_mint_count_HASH = 0;
 
   var start_log_search_at = Math.max(ethblockstart +0, last_imported_mint_block + 1);
     last_reward_eth_block = last_reward_eth_block - 2
-
+	log("searching last current_eth_block:", current_eth_block);
   log("searching lastlast_difficulty_start_block", last_difficulty_start_block, "blocks");
   log("searching last_imported_mint_block", last_imported_mint_block, "blocks");
   log("searching start_log_search_at", start_log_search_at, "blocks");
@@ -1180,10 +1184,10 @@ var total_TOTAL_mint_count_HASH = 0;
 
 
     if (run != 0 && !(run == 1 && attempts > 20)) {
-      localStorage.setItem('mintData_zkBitcoin2_afbRAFFABC', JSON.stringify(mined_blocks));
-      localStorage.setItem('mintDatazkBitcoin_GreekWedding3', JSON.stringify(previousChallenge));
-      localStorage.setItem('lastMintBlock_zkBitcoin2_afbRAFFABC', mined_blocks[0][0]);
-      localStorage.setItem('lastDifficultyStartBlock_zkBitcoin2_afbRAFFABC', last_difficulty_start_block.toString());
+      localStorage.setItem('mintData_zkBitcoin2_afbRAFFABC111', JSON.stringify(mined_blocks));
+      localStorage.setItem('mintDatazkBitcoin_GreekWedding3111', JSON.stringify(previousChallenge));
+      localStorage.setItem('lastMintBlock_zkBitcoin2_afbRAFFABC111', mined_blocks[0][0]);
+      localStorage.setItem('lastDifficultyStartBlock_zkBitcoin2_afbRAFFABC111', last_difficulty_start_block.toString());
     }
 
     log("processed blocks:",
