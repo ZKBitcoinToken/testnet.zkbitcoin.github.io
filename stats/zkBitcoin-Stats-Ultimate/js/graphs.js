@@ -1644,8 +1644,8 @@ function updateGraphData(history_days, num_search_points) {
     num_search_points = history_days;   
 	searchPoints2 = num_search_points
     let start_eth_block = (latest_eth_block-max_blocks);
-	  if(start_eth_block<29812049){
-			  start_eth_block = 29812049;
+	  if(start_eth_block<3722539){
+			  start_eth_block = 3722539;
 	  }
   log("latest_eth_block..."+latest_eth_block);
   log("latest_eth_block max_blocks..."+max_blocks);
