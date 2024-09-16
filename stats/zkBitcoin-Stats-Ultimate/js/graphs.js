@@ -182,7 +182,8 @@ console.log("IS?23 : ",eth_block_num)
 	  log("Expected: ",this.expected_state_length ," vs cur Length: ", this.states.length);
 	  log("searchPoints2: ", searchPoints2);
 	  //try making it 120 values only
-    return searchPoints2 == this.states.length;
+	return this.expected_state_length == this.states.length;  
+    //return searchPoints2 == this.states.length;
   }
   async waitUntilLoaded() {
     while (!this.areAllValuesLoaded()) {
