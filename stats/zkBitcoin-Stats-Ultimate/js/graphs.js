@@ -12,7 +12,7 @@
   obj.getValues returns all requested data
  */
 //USE value 7979960 for everything
-var ethblockstart = 28876372
+var ethblockstart = 3177448
 var adjustAverageRewardTimeGraph = 8
 var searchPoints2 = 120
 class contractValueOverTime {
