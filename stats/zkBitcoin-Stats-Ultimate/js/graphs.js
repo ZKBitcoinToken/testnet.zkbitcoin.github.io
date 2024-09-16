@@ -14,7 +14,7 @@
 //USE value 7979960 for everything
 var ethblockstart = 3177448
 var adjustAverageRewardTimeGraph = 8
-var searchPoints2 = 60
+var searchPoints2 = 55
 class contractValueOverTime {
   constructor(eth, contract_address, storage_index, descriptor) {
     /* how long to wait between sequential requests */
