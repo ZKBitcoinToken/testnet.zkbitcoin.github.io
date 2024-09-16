@@ -94,7 +94,8 @@ class contractValueOverTime {
   }
 
   _getSaveStateFunction(block_states, eth_block_num, retry_delay) {
-    let cv_obj = this;
+    let cv_obj = this;        
+	await sleep(0.5);
 console.log("IS?23 : ",eth_block_num)
     if(retry_delay == null) {
       retry_delay = cv_obj.WAIT_DELAY_ON_TIMEOUT_MS;
