@@ -124,7 +124,7 @@ console.log("IS?23 : ",eth_block_num)
       }
     }
   }
-  async addValueAtEthBlock(eth_block_num, is_retry, retry_delay) {
+ addValueAtEthBlock(eth_block_num, is_retry, retry_delay) {
 	if(eth_block_num < ethblockstart){
 
         log('eth_block_num' + eth_block_num);
@@ -156,8 +156,6 @@ console.log("IS?23 : ",eth_block_num)
                           eth_block_num.toString(10))
     .then(
       this._getSaveStateFunction(this.states, eth_block_num, retry_delay)
-	    
-	await sleep(0.5);
     ).catch(async (error) => {
       if(error.message && error.message.substr(error.message.length-4) == 'null') {
         log('got null from infura, retrying...');
