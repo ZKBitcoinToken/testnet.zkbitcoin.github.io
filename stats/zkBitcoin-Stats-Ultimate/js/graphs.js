@@ -51,7 +51,7 @@ class contractValueOverTime {
 	var storage_data = JSON.parse(localStorage.getItem(this.descriptor));
 
     var last_storage_block = null;   
-    if (storage_data != null) {
+    if (Array.isArray(storage_data) && storage_data.length > 0) {
       log('read in', storage_data.length, 'cached elements for', this.descriptor);
       last_storage_block = storage_data[storage_data.length - 1][0];
 	 log("LAST BLOCK: ", last_storage_block, " for ", this.descriptor);
