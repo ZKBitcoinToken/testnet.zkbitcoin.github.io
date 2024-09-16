@@ -94,8 +94,7 @@ class contractValueOverTime {
   }
 
   _getSaveStateFunction(block_states, eth_block_num, retry_delay) {
-    let cv_obj = this;        
-	await sleep(0.5);
+    let cv_obj = this;
 console.log("IS?23 : ",eth_block_num)
     if(retry_delay == null) {
       retry_delay = cv_obj.WAIT_DELAY_ON_TIMEOUT_MS;
@@ -125,7 +124,7 @@ console.log("IS?23 : ",eth_block_num)
       }
     }
   }
-  addValueAtEthBlock(eth_block_num, is_retry, retry_delay) {
+  async addValueAtEthBlock(eth_block_num, is_retry, retry_delay) {
 	if(eth_block_num < ethblockstart){
 
         log('eth_block_num' + eth_block_num);
@@ -157,6 +156,8 @@ console.log("IS?23 : ",eth_block_num)
                           eth_block_num.toString(10))
     .then(
       this._getSaveStateFunction(this.states, eth_block_num, retry_delay)
+	    
+	await sleep(0.5);
     ).catch(async (error) => {
       if(error.message && error.message.substr(error.message.length-4) == 'null') {
         log('got null from infura, retrying...');
