@@ -12,7 +12,7 @@ log('zkBitcoin Stats', version);
 el('#footerversion').innerHTML = version;
 
 
-var ethblockstart =  3722539;
+var ethblockstart =  3177448;
 const ShowStats = true; //Removes my excessive stats
 const API_zkBTC_Users_tx_transactions = "https://raw.githubusercontent.com/ZKBitcoinToken/zkBitcoin-Home-Git/main/zkBitcoin_statspage_stats.html"
 const Forge_Pool_efficeny = 150/32 + 1  //150 min solves and 32 min on Forge only
