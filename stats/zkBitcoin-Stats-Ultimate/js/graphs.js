@@ -14,7 +14,7 @@
 //USE value 7979960 for everything
 var ethblockstart = 3177448
 var adjustAverageRewardTimeGraph = 8
-var searchPoints2 = 120
+var searchPoints2 = 60
 class contractValueOverTime {
   constructor(eth, contract_address, storage_index, descriptor) {
     /* how long to wait between sequential requests */
@@ -183,7 +183,7 @@ console.log("IS?23 : ",eth_block_num)
 	  log("searchPoints2: ", searchPoints2);
 	  //try making it 120 values only
 	//return this.expected_state_length == this.states.length;  
-    return this.expected_state_length == this.states.length;
+    return searchPoints2 == this.states.length;
   }
   async waitUntilLoaded() {
     while (!this.areAllValuesLoaded()) {
