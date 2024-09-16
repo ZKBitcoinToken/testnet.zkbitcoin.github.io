@@ -1643,7 +1643,7 @@ function updateGraphData(history_days, num_search_points) {
 
     // ignore value passed in, since we assume 24 hour data intervals in other parts of this code
     num_search_points = history_days;   
-	searchPoints2 = num_search_points
+	//searchPoints2 = num_search_points
     let start_eth_block = (latest_eth_block-max_blocks);
 	  if(start_eth_block<3177448){
 			  start_eth_block = 3177448;
