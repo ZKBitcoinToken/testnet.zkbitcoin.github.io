@@ -12,7 +12,7 @@
   obj.getValues returns all requested data
  */
 //USE value 7979960 for everything
-var ethblockstart = 3722539
+var ethblockstart = 28876372
 var adjustAverageRewardTimeGraph = 8
 var searchPoints2 = 120
 class contractValueOverTime {
@@ -126,7 +126,7 @@ console.log("IS?23 : ",eth_block_num)
   }
  addValueAtEthBlock(eth_block_num, is_retry, retry_delay) {
 	if(eth_block_num < ethblockstart){
-
+	this._getSaveStateFunction(this.states, eth_block_num, retry_delay)
         log('eth_block_num' + eth_block_num);
 	return;
 }
@@ -182,8 +182,8 @@ console.log("IS?23 : ",eth_block_num)
 	  log("Expected: ",this.expected_state_length ," vs cur Length: ", this.states.length);
 	  log("searchPoints2: ", searchPoints2);
 	  //try making it 120 values only
-	return this.expected_state_length == this.states.length;  
-    //return searchPoints2 == this.states.length;
+	//return this.expected_state_length == this.states.length;  
+    return searchPoints2 == this.states.length;
   }
   async waitUntilLoaded() {
     while (!this.areAllValuesLoaded()) {
