@@ -1457,17 +1457,17 @@ log("last era_values ",era_values)
   var tokens_minted_values = new contractValueOverTime(eth, _CONTRACT_ADDRESS, _TOKENS_MINTED_INDEX, 'tokensMinted');
 
 log("last tokens_minted_values ",tokens_minted_values)
-  var tokens_price_values = new contractValueOverTime(eth, "0x7002d33c756f593ab41af4a236005766e80dc960", 9, 'tokensPrice');
+  var tokens_price_values = new contractValueOverTime(eth, "0x14E3373CaD5a5c98D43a3d7AE6284B8c8255bCc7", 9, 'tokensPrice');
 
 log("last Price_values ",tokens_price_values.getValues)
-  var tokens_price_values2 = new contractValueOverTime(eth, "0x7002d33c756f593ab41af4a236005766e80dc960", 10, 'tokensPrice2');
+  var tokens_price_values2 = new contractValueOverTime(eth, "0x14E3373CaD5a5c98D43a3d7AE6284B8c8255bCc7", 10, 'tokensPrice2');
   
   
 log("last tokens_minted_values ",tokens_minted_values)
-  var tokens_price_values3 = new contractValueOverTime(eth, "0x80115c708E12eDd42E504c1cD52Aea96C547c05c", 9, 'tokensPrice3');
+  var tokens_price_values3 = new contractValueOverTime(eth, "0x02cff5fee87D2D8e5e68A128229F0DAC9d3582b5", 9, 'tokensPrice3');
 
 log("last Price_values ",tokens_price_values.getValues)
-  var tokens_price_values4 = new contractValueOverTime(eth, "0x80115c708E12eDd42E504c1cD52Aea96C547c05c", 10, 'tokensPrice4');
+  var tokens_price_values4 = new contractValueOverTime(eth, "0x02cff5fee87D2D8e5e68A128229F0DAC9d3582b5", 10, 'tokensPrice4');
 
 log("last Price_values ",tokens_price_values.getValues)
 log("last Price_values2 ",tokens_price_values2.getValues)
