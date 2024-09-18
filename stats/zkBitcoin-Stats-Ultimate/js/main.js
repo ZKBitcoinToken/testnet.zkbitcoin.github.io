@@ -45,7 +45,7 @@ const _HASHRATE_MULTIPLIER = 2**22; /* TODO: calculate this from max_target (htt
 /* contract variable storage locations */
 const _LAST_DIFF_START_BLOCK_INDEX = '10'; //BLOCK OF DIFFICULTY START 
 const _ERA_INDEX = '11'; //getEpoch
-const _TOKENS_MINTED_INDEX = '21';
+const _TOKENS_MINTED_INDEX = '22';
 const _MINING_TARGET_INDEX = '15';
 /* calculated contract values */
 const _MAXIMUM_TARGET_BN = new Eth.BN(_MAXIMUM_TARGET_STR, 10);

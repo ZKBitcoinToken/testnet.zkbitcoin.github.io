@@ -14,7 +14,8 @@
 //USE value 7979960 for everything
 var ethblockstart = 3177448
 var adjustAverageRewardTimeGraph = 8
-var searchPoints2 = 55
+var searchPoints2 = 42
+var searchPoints3 = 41
 class contractValueOverTime {
   constructor(eth, contract_address, storage_index, descriptor) {
     /* how long to wait between sequential requests */
@@ -181,9 +182,10 @@ console.log("IS?23 : ",eth_block_num)
     //log('cv_obj', this.storage_index.padStart(2), ': values loaded: ', this.states.length, '/', this.expected_state_length);
 	  log("Expected: ",this.expected_state_length ," vs cur Length: ", this.states.length);
 	  log("searchPoints2: ", searchPoints2);
+	  log("searchPoints3: ", searchPoints3);
 	  //try making it 120 values only
 	//return this.expected_state_length == this.states.length;  
-    return searchPoints2 == this.states.length;
+    return searchPoints2 == this.states.length || searchPoints3 == this.states.length;
   }
   async waitUntilLoaded() {
     while (!this.areAllValuesLoaded()) {
@@ -324,22 +326,29 @@ function generateHashrateAndBlocktimeGraph(eth, target_cv_obj, era_cv_obj, price
   var tokens_price_values2 = price_cv_obj2.getValues;
   var tokens_price_values3 = price_cv_obj3.getValues;
   var tokens_price_values4 = price_cv_obj4.getValues;
-
+console.log("tokens_price_values123123: ", tokens_price_values);
+console.log("tokens_price_values44444: ", tokens_price_values4);
   function convertValuesToChartData(values, value_mod_function) {
     var chart_data = []
     for (var i = 0; i < values.length; i++) {
       /* TODO: remove this if we expect some values to be zero */
       if(values[i][1].eq(_ZERO_BN)) {
-        continue;
+        //continue;
       }
       if(value_mod_function == undefined) {
         value_mod_function = function(v){return v};
       }
-	if(values[i][0] > ethblockstart){
-      chart_data.push({
-        x: values[i][0],
-        y: value_mod_function(values[i][1]),
-      })
+		if(values[i][1].eq(_ZERO_BN)){
+				chart_data.push({
+				x: values[i][0],
+				y: value_mod_function(values[i][1]),
+			  })
+			
+		}else if(values[i][0] > ethblockstart){
+			  chart_data.push({
+				x: values[i][0],
+				y: value_mod_function(values[i][1]),
+			  })
 }	
       //console.log('log', values[i][0], value_mod_function(values[i][1]))
       //labels.push(values[i][0]);
@@ -390,8 +399,10 @@ function generateHashrateAndBlocktimeGraph(eth, target_cv_obj, era_cv_obj, price
       //console.log('diff chg @', difficulty_change_block_num);
 	var difficulty =0
 	try{
-      var difficulty = difficulty_data[difficulty_data_index].y.toNumber();
+		console.log(" difficulty_data[difficulty_data_index].y: ",  difficulty_data[difficulty_data_index].y);
+      	difficulty = difficulty_data[difficulty_data_index].y.toNumber();
 	}catch{
+		difficulty =_MAXIMUM_TARGET_BN;
 	}
       /* if difficulty change occurs within this step window */
       if (step != 0
@@ -409,12 +420,17 @@ function generateHashrateAndBlocktimeGraph(eth, target_cv_obj, era_cv_obj, price
 	try{
         current_difficulty = difficulty_data[difficulty_data_index].y.toNumber();
 	}catch{
+		current_difficulty=_MAXIMUM_TARGET_BN;
 	}
         /* NOTE: since the data is stored kind-of oddly (two values per
            difficulty: both the first and last known block at that value), we
            index difficulty_data as step-1 instead of step-2, skipping a
            value. */
-        var last_difficulty = difficulty_data[difficulty_data_index-1].y.toNumber();
+		try{
+        	var last_difficulty = difficulty_data[difficulty_data_index-1].y.toNumber();
+	}catch{
+		last_difficulty=_MAXIMUM_TARGET_BN;
+	}
         difficulty = (current_difficulty * (diff1_duration/step_size_in_eth_blocks))
                      + (last_difficulty * (diff2_duration/step_size_in_eth_blocks));
         // console.log('step size', step_size_in_eth_blocks);
@@ -458,8 +474,12 @@ function generateHashrateAndBlocktimeGraph(eth, target_cv_obj, era_cv_obj, price
       //console.log('diff chg @', difficulty_change_block_num);
 var difficulty =0
 	try{
-      var difficulty = difficulty_data[difficulty_data_index].y.toNumber();
-	}catch{
+      		difficulty = difficulty_data[difficulty_data_index].y.toNumber();
+		} catch (error) {
+		  console.error("ZZZZZAn error occurred:", error);
+			console.log("ZZZZZAn difficulty_data[difficulty_data_index-1].y: ",  difficulty_data[difficulty_data_index-1].y);
+					console.log("ZZZZZAn difficulty_data_index: ", difficulty_data_index);
+		difficulty = 1;
 	}
       /* if difficulty change occurs within this step window */
       if (step != 0
@@ -473,16 +493,25 @@ var difficulty =0
         var step_size_in_eth_blocks = eras_per_block_data[step].x - eras_per_block_data[step-1].x;
         var diff1_duration = eras_per_block_data[step].x - difficulty_change_block_num;
         var diff2_duration = difficulty_change_block_num - eras_per_block_data[step-1].x;
-	var current_difficulty =0
+	var current_difficulty =0;
 	try{
         current_difficulty = difficulty_data[difficulty_data_index].y.toNumber();
 	}catch{
+		current_difficulty = 1;
 	}
 	    /* NOTE: since the data is stored kind-of oddly (two values per
            difficulty: both the first and last known block at that value), we
            index difficulty_data as step-1 instead of step-2, skipping a
            value. */
-        var last_difficulty = difficulty_data[difficulty_data_index-1].y.toNumber();
+		try{
+		    var last_difficulty = difficulty_data[difficulty_data_index-1].y.toNumber();
+		} catch (error) {
+		  console.error("ZZZZZAn2 error occurred:", error);
+								console.log("ZZZZZAn2 difficulty_data_index: ", difficulty_data_index);
+
+			console.log("ZZZZZAn2 difficulty_data[difficulty_data_index-1].y: ",  difficulty_data[difficulty_data_index-1].y);
+			  var last_difficulty =1;
+			}	
         difficulty = (current_difficulty * (diff1_duration/step_size_in_eth_blocks))
                      + (last_difficulty * (diff2_duration/step_size_in_eth_blocks));
         // console.log('step size', step_size_in_eth_blocks);
@@ -510,11 +539,13 @@ console.log("CB" , current_eth_block)
     }
     return chart_data;
   }
+  
+  console.log("Target values Two: ", target_values);
 
   var difficulty_data = convertValuesToChartData(target_values, 
-                                                 (x)=>{return _MAXIMUM_TARGET_BN.div(x)});
+                                                 (x)=>{return _MINIMUM_TARGET_BN.div(x)});
   var ALL_difficulty_data = convertValuesToChartData(target_values, 
-                                                 (x)=>{return _MAXIMUM_TARGET_BN.div(x)});
+                                                 (x)=>{return _MINIMUM_TARGET_BN.div(x)});
   var era_data = convertValuesToChartData(era_values);
 
   var total_supply_data = convertValuesToChartData(tokens_minted_values, 
@@ -531,6 +562,13 @@ console.log("CB" , current_eth_block)
   var total_price_data4 = convertValuesToChartData(tokens_price_values4, 
                                                    (x)=>{return x * 1/ 10**18 });
   console.log("TTTT TOTAL PRICE DATA : ", total_price_data4);
+	  console.log("TTTT TOTAL difficulty_data : ", difficulty_data);
+	  console.log("TTTT TOTAL era_data : ", era_data);
+	  console.log("TTTT TOTAL total_supply_data : ", total_supply_data);
+	  console.log("TTTT TOTAL total_price_data : ", total_price_data);
+	  console.log("TTTT TOTAL total_price_data2 : ", total_price_data2);
+	  console.log("TTTT TOTAL total_price_data3: ", total_price_data3);
+	  console.log("TTTT TOTAL total_price_data4 : ", total_price_data4);
 	
 	
 	  let resultffffff = [];
@@ -541,15 +579,15 @@ console.log("CB" , current_eth_block)
     const nextValue = i + 1 < difficulty_data.length ? difficulty_data[i + 1].y.toString() : null;
 
     // Add the first occurrence
-    if (previousValue !== currentValue) {
+  //  if (previousValue !== currentValue) {
       resultffffff.push(difficulty_data[i]);
-      previousValue = currentValue;
-    }
+    //  previousValue = currentValue;
+ //   }
 
     // Add the last occurrence
-    if (currentValue !== nextValue && nextValue !== null) {
-      resultffffff.push(difficulty_data[i]);
-    }
+  //  if (currentValue !== nextValue && nextValue !== null) {
+    //  resultffffff.push(difficulty_data[i]);
+   // }
   }
 
   // Always add the last element if it's not already included
@@ -575,8 +613,11 @@ console.log("CB" , current_eth_block)
         if (total_price_data2[index].y === 0) {
             // Handle division by zero if necessary
             console.error("Division by zero at index " + index);
-            return null; // or handle it another way, depending on your needs
-        }
+            return {
+				x: item.x, // You can choose to retain the x value or modify this structure
+				y: 0
+			};
+		}
         return {
             x: item.x, // You can choose to retain the x value or modify this structure
             y: 1 / (item.y / total_price_data2[index].y)
@@ -584,9 +625,13 @@ console.log("CB" , current_eth_block)
     });
       let result2 = total_price_data.map((item, index) => {
         if (total_price_data2[index].y === 0) {
+			
             // Handle division by zero if necessary
             console.error("Division by zero at index " + index);
-            return null; // or handle it another way, depending on your needs
+			return {
+				x: item.x, // You can choose to retain the x value or modify this structure
+				y: 0
+			};
         }
         return {
             x: item.x, // You can choose to retain the x value or modify this structure
@@ -598,7 +643,11 @@ console.log("CB" , current_eth_block)
         if (result2[index].y === 0) {
             // Handle division by zero if necessary
             console.error("Division by zero at index " + index);
-            return null; // or handle it another way, depending on your needs
+            
+			return {
+				x: item.x, // You can choose to retain the x value or modify this structure
+				y: 0
+			};
         }
         return {
             x: item.x, // You can choose to retain the x value or modify this structure
@@ -618,7 +667,10 @@ for (let i = 0; i < Math.min(avgPriceAtTime.length, ALL_difficulty_data.length);
     if (avgPriceAtTime[avgPriceIndex].y === 0) {
         // Handle division by zero if necessary
         console.error("Division by zero at index " + avgPriceIndex);
-        avgRevenue.push(null); // or handle it another way, depending on your needs
+        avgRevenue.push({
+            x: ALL_difficulty_data[difficultyIndex].x, // You can choose to retain the x value or modify this structure
+            y: 0
+        });
     } else {
         avgRevenue.push({
             x: ALL_difficulty_data[difficultyIndex].x, // You can choose to retain the x value or modify this structure
@@ -648,7 +700,7 @@ console.log("Revenue price at time: ", avgPriceAtTime);
 
   var hashrate_data = getHashrateDataFromDifficultyAndErasPerBlockData(difficulty_data, eras_per_block_data);
 
-  var hashrate_data2 = getHashrateDataFromDifficultyAndErasPerBlockData2(difficulty_data, eras_per_block_data);
+ // var hashrate_data2 = getHashrateDataFromDifficultyAndErasPerBlockData2(difficulty_data, eras_per_block_data);
 
   var average_reward_time_data = [];
   for(var i = 0; i < eras_per_block_data.length; i += 1) {
@@ -661,6 +713,8 @@ if(eras_per_block_data[i].x > ethblockstart){
       y: 1 / (eras_per_block_data[i].y * adjustAverageRewardTimeGraph),
     })}
   }
+
+console.log("Average Reward Time Graph stuff: ", average_reward_time_data);
 
   /* figure out how to scale chart: difficulty can be too high or too low */
   var max_difficulty_value = 0
@@ -1457,17 +1511,17 @@ log("last era_values ",era_values)
   var tokens_minted_values = new contractValueOverTime(eth, _CONTRACT_ADDRESS, _TOKENS_MINTED_INDEX, 'tokensMinted');
 
 log("last tokens_minted_values ",tokens_minted_values)
-  var tokens_price_values = new contractValueOverTime(eth, "0x14E3373CaD5a5c98D43a3d7AE6284B8c8255bCc7", 9, 'tokensPrice');
+  var tokens_price_values = new contractValueOverTime(eth, "0x14E3373CaD5a5c98D43a3d7AE6284B8c8255bCc7", 10, 'tokensPrice');
 
 log("last Price_values ",tokens_price_values.getValues)
-  var tokens_price_values2 = new contractValueOverTime(eth, "0x14E3373CaD5a5c98D43a3d7AE6284B8c8255bCc7", 10, 'tokensPrice2');
+  var tokens_price_values2 = new contractValueOverTime(eth, "0x14E3373CaD5a5c98D43a3d7AE6284B8c8255bCc7", 9, 'tokensPrice2');
   
   
 log("last tokens_minted_values ",tokens_minted_values)
-  var tokens_price_values3 = new contractValueOverTime(eth, "0x02cff5fee87D2D8e5e68A128229F0DAC9d3582b5", 9, 'tokensPrice3');
+  var tokens_price_values3 = new contractValueOverTime(eth, "0x02cff5fee87D2D8e5e68A128229F0DAC9d3582b5", 10, 'tokensPrice3');
 
 log("last Price_values ",tokens_price_values.getValues)
-  var tokens_price_values4 = new contractValueOverTime(eth, "0x02cff5fee87D2D8e5e68A128229F0DAC9d3582b5", 10, 'tokensPrice4');
+  var tokens_price_values4 = new contractValueOverTime(eth, "0x02cff5fee87D2D8e5e68A128229F0DAC9d3582b5", 9, 'tokensPrice4');
 
 log("last Price_values ",tokens_price_values.getValues)
 log("last Price_values2 ",tokens_price_values2.getValues)
@@ -1600,7 +1654,7 @@ last_diff_start_blocks.addValueAtEthBlock(end_eth_block);
   last_diff_start_blocks.sortValues();
 	// Deep copy
 	
-
+console.log("tokens_minted_values values: ", tokens_minted_values);
 	mining_target_values.saveToLocalStorage();
   // TODO: remove this when we are sure it is fixed
   //era_values.deleteLastPointIfZero();
